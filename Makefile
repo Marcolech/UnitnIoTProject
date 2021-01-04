@@ -19,11 +19,12 @@ include $(CONFIG_DIR)/compiler.mk
 BINARY_FILE = $(BIN_DIR)/$(PROJECT_NAME).out
 MAP_FILE = $(BIN_DIR)/$(PROJECT_NAME).map
 
+rwildcard=$(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
 
 # Project executable
 MAIN_DIR 	= $(SRC_DIR)
-MAIN_DEPS	= $(wildcard $(MAIN_DIR)/*.h) $(wildcard $(MAIN_DIR)/*/*.h)
-MAIN_SRCS	= $(wildcard $(MAIN_DIR)/*.c) $(wildcard $(MAIN_DIR)/*/*.c)
+MAIN_DEPS	= $(call rwildcard,$(MAIN_DIR),*.h)
+MAIN_SRCS	= $(call rwildcard,$(MAIN_DIR),*.c)
 MAIN_OBJS 	= $(patsubst $(SRC_DIR)%.c,$(BIN_DIR)%.o,$(MAIN_SRCS))
 
 
