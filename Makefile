@@ -32,15 +32,13 @@ MAIN_OBJS 	= $(patsubst $(SRC_DIR)%.c,$(BIN_DIR)%.o,$(MAIN_SRCS))
 $(BIN_DIR)/%.o: $(SRC_DIR)/%.c
 	@echo 'Building target: "$@"'
 	@mkdir -p $(@D)
-	$(CC) -c -o $@ $< $(CC_FLAGS) $(CC_INCLUDE_FLAGS)
-	@echo ' '
+	@$(CC) -c -o $@ $< $(CC_FLAGS) $(CC_INCLUDE_FLAGS)
 
 # create final executable
 build: $(MAIN_OBJS)
-	@echo 'Building target: "$@"'
-	@echo 'Invoking Linker'
-	$(LD) -o $(BINARY_FILE) $^ $(LD_FLAGS) $(LD_INCLUDE_FLAGS)
-	@echo ' '
+	@echo 'Linking $(BINARY_FILE)'
+	@$(LD) -o $(BINARY_FILE) $^ $(LD_FLAGS) $(LD_INCLUDE_FLAGS)
+	@echo 'Linking done'
 
 help:
 	@cat README
