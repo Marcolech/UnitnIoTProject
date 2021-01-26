@@ -9,6 +9,7 @@
 
 #define AT              "AT"
 #define AT_RST          "AT+RST"
+#define AT_RESTORE      "AT+RESTORE"
 #define AT_GMR          "AT+GMR"
 #define AT_GSLP         "AT+GSLP"
 #define ATE             "ATE"
@@ -25,7 +26,7 @@
 #define AT_CIPSTATUS    "AT+CIPSTATUS"
 #define AT_CIPSTART     "AT+CIPSTART"
 #define AT_CIPSEND      "AT+CIPSEND"
-#define AT_CIPCLOSE     "AT+CIPSEND"
+#define AT_CIPCLOSE     "AT+CIPCLOSE"
 #define AT_CIFSR        "AT+CIFSR"
 #define AT_CIPMUX       "AT+CIPMUX"
 #define AT_CIPSERVER    "AT+CIPSTO"
@@ -43,6 +44,8 @@
 #define ESP8266_TCP             0
 #define ESP8266_UDP             1
 
+bool ESP8266_factoryReset(UART *uart);
+
 bool ESP8266_checkUartCommunication(UART *uart);
 
 bool ESP8266_setWifiMode(UART *uart, char wifiMode);
@@ -51,10 +54,23 @@ bool ESP8266_availableAPs(UART *uart);
 
 bool ESP8266_connectToAP(UART *uart, char *ssid, char *password);
 
-bool ESP8266_establishConnection(UART *uart, char ID, uint8_t type, char *address, char *port);
+bool ESP8266_disconnectFromAP(UART *uart);
+
+uint32_t ESP8266_getIPAddress(UART *uart, char *buffer, int bufferSize);
+
+bool ESP8266_setSingleConnectionMode(UART *uart);
+
+bool ESP8266_setMultipleConnectionMode(UART *uart);
+
+bool ESP8266_establishSingleConnection(UART *uart, uint8_t type, char *address, int port);
+
+bool ESP8266_establishConnection(UART *uart, char ID, uint8_t type, char *address, int port);
+
+bool ESP8266_closeConnection(UART *uart);
+
+bool ESP8266_sendDataSingleConnection(UART *uart, char *data, uint32_t dataSize);
 
 bool ESP8266_sendData(UART *uart, char id, char *data, uint32_t dataSize);
 
-void ESP8266_SendATCommand(UART *uart, char *ATcommand);
 
 #endif /* DEVICES_ESP8266_H_ */
