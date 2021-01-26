@@ -20,7 +20,7 @@ void delay_init(void) {
     MAP_CS_setReferenceOscillatorFrequency(CS_REFO_128KHZ);
     MAP_CS_initClockSignal(CS_ACLK,
                            CS_REFOCLK_SELECT,
-                           CS_CLOCK_DIVIDER_2);
+                           CS_CLOCK_DIVIDER_1);
 
     // Configuring Continuous Mode
     Timer_A_configureContinuousMode(TIMER_A0_BASE, &continuousModeConfig);

@@ -4,7 +4,7 @@
 #include "driverlib.h"
 #include "msp.h"
 
-//#define DELAY_WITH_TIMER
+#define DELAY_WITH_TIMER
 
 #define DELAY_RUNNING 0
 #define DELAY_GONE 1
