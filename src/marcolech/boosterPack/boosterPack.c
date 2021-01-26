@@ -3,10 +3,11 @@
 void BPM2_initHardware()
 {
     // *********************************************************
-    // Init I2C and temperature sensor
+    // Init I2C, temperature and light sensor
     // *********************************************************
     I2C_init();
     TMP006_init();
+    LIGHT_init();
 
     // *********************************************************
     // Initializing ADC (ADCOSC/64/8)

@@ -4,6 +4,7 @@
 #include "accelerometer/accelerometer.h"
 #include "joystick/joystick.h"
 #include "thermometer/thermometer.h"
+#include "light/lightSensor.h"
 
 #include <marcolech/utils/i2c/i2c.h>
 

@@ -102,6 +102,57 @@ bool wifiConnectToAP(UART *wifi) {
 
 }
 
+bool sendTemperature(UART *wifi) {
+    long double temp = THERMO_getCelsius();
+    int intTemp = (int) temp;
+    UART_printf(&pc, "Temperature: %d\r\n", intTemp);
+
+    char buffer[2048];
+
+    sprintf(buffer, "{\"site\":\"%s\",\"field\":\"%s\",\"value\":%d}", BOARD_ROOM, "temperature", intTemp);
+    unsigned int bufferLen = strlen(buffer);
+
+    // send data
+    if (!ESP8266_sendDataSingleConnection(wifi, buffer, bufferLen)) {
+        UART_printString(&pc, "Error sending data to udp server\r\n");
+        return false;
+    }
+
+    return true;
+}
+
+bool sendLight(UART *wifi) {
+    int lux = (int) OPT3001_getLux();
+    UART_printf(&pc, "Lux: %d\r\n", lux);
+
+    char buffer[2048];
+    unsigned int bufferLen;
+
+    // send lux value
+    sprintf(buffer, "{\"site\":\"%s\",\"field\":\"%s\",\"value\":%d}", BOARD_ROOM, "lux", lux);
+    bufferLen = strlen(buffer);
+    if (!ESP8266_sendDataSingleConnection(wifi, buffer, bufferLen)) {
+        UART_printString(&pc, "Error sending data to udp server\r\n");
+        return false;
+    }
+
+    // send light on/off value
+    bool lightOn = lux < BOARD_LUX_THRESHOLD_LIGHT_ON ? true : false;
+    sprintf(buffer, "{\"site\":\"%s\",\"field\":\"%s\",\"value\":%d}", BOARD_ROOM, "light", lightOn);
+    bufferLen = strlen(buffer);
+    if (!ESP8266_sendDataSingleConnection(wifi, buffer, bufferLen)) {
+        UART_printString(&pc, "Error sending data to udp server\r\n");
+        return false;
+    }
+    if (lightOn) {
+        LED_on(&(rgbLed.green));
+    } else  {
+        LED_off(&(rgbLed.green));
+    }
+
+    return true;
+}
+
 bool wifiSendData(UART *wifi) {
     LED_on(&debugLed);
     UART_flush(wifi);
@@ -113,20 +164,12 @@ bool wifiSendData(UART *wifi) {
         return false;
     }
 
-
-    long double temp = THERMO_getCelsius();
-    int intTemp = (int) temp;
-    UART_printf(&pc, "Temperature: %d\r\n", intTemp);
-
-    char buffer[2048];
-
-    sprintf(buffer, "{\"site\":\"%s\",\"field\":\"%s\",\"value\":%d}", BOARD_ROOM, "temperature", intTemp);
-    unsigned int bufferLen = strlen(buffer);
-//    UART_printf(&pc, "Sending [%d]: |%s|\r\n", bufferLen, buffer);
-
     // send data
-    if (!ESP8266_sendDataSingleConnection(wifi, buffer, bufferLen)) {
-        UART_printString(&pc, "Error sending data to udp server\r\n");
+    if (!sendTemperature(wifi)) {
+        return false;
+    }
+
+    if (!sendLight(wifi)) {
         return false;
     }
 
@@ -147,7 +190,7 @@ void run() {
         LED_off(&debugLed);
 
         while (wifiSendData(&esp8266Uart) != false) {
-            delay(5);
+            delay(1);
         }
 
 
