@@ -152,6 +152,10 @@ void UART_printf(UART *uart, const char *fs, ...) {
                     i = va_arg(valist, int);
                     UART_printInteger(uart, i);
                     break;
+                case 'd':
+                    i = va_arg(valist, int);
+                    UART_printInteger(uart, i);
+                    break;
             }
 
             ++fs;

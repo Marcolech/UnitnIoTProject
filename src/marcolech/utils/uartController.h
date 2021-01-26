@@ -1,5 +1,5 @@
-#ifndef HARDWARE_UART_DRIVER_H_
-#define HARDWARE_UART_DRIVER_H_
+#ifndef MARCOLECH_UART_CONTROLLER_H_
+#define MARCOLECH_UART_CONTROLLER_H_
 
 #include <stdio.h>
 #include <rom.h>
@@ -38,4 +38,4 @@ uint32_t UART_available(UART *uart);
 
 void UART_flush(UART *uart);
 
-#endif /* HARDWARE_UART_DRIVER_H_ */
+#endif /* MARCOLECH_UART_CONTROLLER_H_ */
