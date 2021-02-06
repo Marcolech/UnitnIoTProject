@@ -197,7 +197,6 @@ bool ESP8266_sendData(UART *uart, char id, char *data, uint32_t dataSize) {
     // wait the > char, esp is waiting data to send
     UART_printf(uart, data);
 
-    delay(1);
     if (!ESP8266_waitForAnswer(uart)) {
         return false;
     }
