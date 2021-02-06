@@ -122,7 +122,7 @@ bool sendTemperature(UART *wifi) {
 }
 
 bool sendLight(UART *wifi) {
-    int lux = (int) OPT3001_getLux();
+    int lux = (int) LIGHT_getLux();
     UART_printf(&pc, "Lux: %d\r\n", lux);
 
     char buffer[2048];
@@ -138,17 +138,27 @@ bool sendLight(UART *wifi) {
 
     // send light on/off value
     bool lightOn = lux < BOARD_LUX_THRESHOLD_LIGHT_ON ? true : false;
-    sprintf(buffer, "{\"site\":\"%s\",\"field\":\"%s\",\"value\":%d}", BOARD_ROOM, "light", lightOn);
-    bufferLen = strlen(buffer);
-    if (!ESP8266_sendDataSingleConnection(wifi, buffer, bufferLen)) {
-        UART_printString(&pc, "Error sending data to udp server\r\n");
-        return false;
+    bool lightOff = lux > BOARD_LUX_THRESHOLD_LIGHT_OFF ? true : false;
+
+    UART_printf(&pc, "Light on: %d\t off: %d\r\n", lightOn, lightOff);
+
+    // update only if the light has to be turn on or off
+    if (lightOn || lightOff) {
+        sprintf(buffer, "{\"site\":\"%s\",\"field\":\"%s\",\"value\":%d}", BOARD_ROOM, "light", lightOn);
+        bufferLen = strlen(buffer);
+        if (!ESP8266_sendDataSingleConnection(wifi, buffer, bufferLen)) {
+            UART_printString(&pc, "Error sending data to udp server\r\n");
+            return false;
+        }
+        if (lightOn) {
+            LED_on(&(rgbLed.green));
+        }
+
+        if (lightOff) {
+            LED_off(&(rgbLed.green));
+        }
     }
-    if (lightOn) {
-        LED_on(&(rgbLed.green));
-    } else  {
-        LED_off(&(rgbLed.green));
-    }
+
 
     return true;
 }
@@ -156,7 +166,6 @@ bool sendLight(UART *wifi) {
 bool wifiSendData(UART *wifi) {
     LED_on(&debugLed);
     UART_flush(wifi);
-    delay(1);
 
     // open connection
     if (!ESP8266_establishSingleConnection(wifi, ESP8266_UDP, NETWORK_UDP_SERVER_IP, NETWORK_UDP_SERVER_PORT)) {

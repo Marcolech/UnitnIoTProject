@@ -5,4 +5,6 @@
 
 void LIGHT_init();
 
+unsigned long int LIGHT_getLux();
+
 #endif //MARCOLECH_BOOSTERPACKMK2_LIGHTSENSOR_H
