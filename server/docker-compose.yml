@@ -55,3 +55,12 @@ services:
     volumes:
       - ./config/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
     restart: unless-stopped
+
+
+  udpmqtt:
+    container_name: udpmqtt
+    build:
+      context: ./udpMqttServer
+    ports:
+      - 7000:7000/udp
+    restart: unless-stopped
