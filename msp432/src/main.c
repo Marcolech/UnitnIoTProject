@@ -2,8 +2,8 @@
 #include "driverlib.h"
 #include "msp.h"
 
-#include <marcolech/utils/delay.h>
-#include <marcolech/utils/ledController.h>
+#include <marcolech/utils/delay/delay.h>
+#include <marcolech/utils/led/ledController.h>
 #include <marcolech/network/networkManager.h>
 #include <marcolech/boosterPack/boosterPack.h>
 

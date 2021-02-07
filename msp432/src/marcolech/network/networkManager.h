@@ -2,7 +2,7 @@
 #define MARCOLECH_NETWORKMANAGER_H
 
 #include <marcolech/network/devices/esp8266.h>
-#include <marcolech/utils/uartController.h>
+#include <marcolech/utils/uart/uartController.h>
 
 void NETWORK_init();
 

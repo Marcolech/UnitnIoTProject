@@ -4,8 +4,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <marcolech/network/networkManager.h>
-#include <marcolech/utils/delay.h>
-#include <marcolech/utils/uartController.h>
+#include <marcolech/utils/delay/delay.h>
+#include <marcolech/utils/uart/uartController.h>
 
 #define AT              "AT"
 #define AT_RST          "AT+RST"
