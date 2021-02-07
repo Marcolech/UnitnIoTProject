@@ -53,5 +53,4 @@ dkms.conf
 
 
 # Project specific
-bin
 venv
