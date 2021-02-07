@@ -19,6 +19,8 @@ include $(CONFIG_DIR)/compiler.mk
 BINARY_FILE = $(BIN_DIR)/$(PROJECT_NAME).out
 MAP_FILE = $(BIN_DIR)/$(PROJECT_NAME).map
 
+# macro to list file recursively, avoid list of all directories
+# the problem with this, to exclude a file it has to be at the same level or above the folder in input
 rwildcard=$(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
 
 # Project executable
